@@ -25,4 +25,5 @@ ELASTICSEARCH = [
 
 # Additional modules to load in the worker and webserver.
 EXTRA_MODULES = [
+    "semanticizest",
 ]
