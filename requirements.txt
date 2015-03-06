@@ -19,3 +19,4 @@ six>=1.4.1
 tornado
 unidecode
 weighwords
+urllib3
