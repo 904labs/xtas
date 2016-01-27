@@ -54,6 +54,15 @@ def guess_language(doc, output="best"):
 
 
 @app.task
+def heideltime(doc, language='english'):
+    # TODO document me
+    from ._heideltime import call_heideltime
+
+    # TODO parse the TIMEX XML format.
+    return call_heideltime(fetch(doc), language)
+
+
+@app.task
 def morphy(doc):
     """Lemmatize tokens using morphy, WordNet's lemmatizer.
 
@@ -101,6 +110,25 @@ def _tokenize_if_needed(s):
 
 
 @app.task
+def nlner_conll(doc):
+    """Baseline NER tagger for Dutch, based on the CoNLL'02 dataset.
+
+    See http://www.clips.uantwerpen.be/conll2002/ner/ for the dataset and
+    its license.
+
+    See also
+    --------
+    frog: NER tagger and dependency parser for Dutch.
+
+    stanford_ner_tag: NER tagger for English.
+    """
+    from ._nl_conll_ner import ner
+    doc = fetch(doc)
+    doc = _tokenize_if_needed(doc)
+    return ner(doc)
+
+
+@app.task
 def stem_snowball(doc, language):
     """Stem words in doc using the Snowball stemmer.
 
@@ -142,6 +170,10 @@ def stanford_ner_tag(doc, output="tokens"):
     -------
     tagged : list of list of pair of string
         For each sentence, a list of (word, tag) pairs.
+
+    See also
+    --------
+    nlner_conll: NER tagger for Dutch.
     """
     from ._stanford_ner import tag
     doc = fetch(doc)
@@ -278,6 +310,10 @@ def frog(doc, output='raw'):
     References
     ----------
     `Frog homepage <http://ilk.uvt.nl/frog/>`_
+
+    See also
+    --------
+    nlner_conll: simple NER tagger for Dutch.
     """
     from ._frog import call_frog, parse_frog, frog_to_saf
     if output not in ('raw', 'tokens', 'saf'):
