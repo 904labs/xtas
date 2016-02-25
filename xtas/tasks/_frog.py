@@ -71,7 +71,6 @@ def parse_frog(lines):
             # end of sentence marker
             sid += 1
         else:
-            print(l.strip())
             parts = l.split("\t")
             tid, token, lemma, morph, pos, conf, ne, _, parent, rel = parts
             if rel:
