@@ -22,4 +22,3 @@ tornado
 unidecode
 urllib3
 weighwords
-urllib3
